@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["ESNext"],
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "paths": {
+      "@wolfschanze/*": ["./packages/*/src", "./packages/*"],
+      "@wolfschanze/frontstore": ["./apps/frontstore"]
+    },
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true
+  },
+  "exclude": ["node_modules"],
+  "references": [
+    { "path": "./packages/typescript-config" },
+    { "path": "./packages/eslint-config" },
+    { "path": "./apps/frontstore" }
+  ]
+}
