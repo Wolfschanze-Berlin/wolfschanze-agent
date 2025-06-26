@@ -1,0 +1,90 @@
+name: Release Please
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+  packages: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      releases_created: ${{ steps.release.outputs.releases_created }}
+      paths_released: ${{ steps.release.outputs.paths_released }}
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  build-and-publish:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.releases_created == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm build
+
+      - name: Configure npm for publishing
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+          npm whoami
+
+      - name: Publish packages
+        run: |
+          # Parse the paths_released to determine which packages to publish
+          PATHS="${{ needs.release-please.outputs.paths_released }}"
+          
+          # Convert paths to JSON array for easier parsing
+          IFS=',' read -ra ADDR <<< "$PATHS"
+          
+          for path in "${ADDR[@]}"; do
+            # Trim whitespace
+            path=$(echo "$path" | xargs)
+            
+            # Check if it's a package directory
+            if [[ $path == packages/* ]]; then
+              echo "Publishing package in $path"
+              cd "$path"
+              
+              # Check if package.json has private: false or no private field
+              if [ -f "package.json" ]; then
+                IS_PRIVATE=$(node -p "require('./package.json').private || false")
+                if [ "$IS_PRIVATE" != "true" ]; then
+                  pnpm publish --access public --no-git-checks
+                else
+                  echo "Skipping private package in $path"
+                fi
+              fi
+              
+              cd - > /dev/null
+            fi
+          done
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
