@@ -1,0 +1,24 @@
+{
+  "name": "@wolfschanze/typescript-config",
+  "version": "0.0.0",
+  "description": "Shared TypeScript configuration for Wolfschanze projects",
+  "keywords": ["typescript", "config", "wolfschanze"],
+  "homepage": "https://github.com/your-username/wolfschanze-agent#readme",
+  "bugs": {
+    "url": "https://github.com/your-username/wolfschanze-agent/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-username/wolfschanze-agent.git",
+    "directory": "packages/typescript-config"
+  },
+  "license": "MIT",
+  "author": "Your Name",
+  "files": [
+    "base.json",
+    "nextjs.json"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
