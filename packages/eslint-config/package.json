@@ -1,8 +1,12 @@
 {
   "name": "@wolfschanze/eslint-config",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Shared ESLint configuration for Wolfschanze projects",
-  "keywords": ["eslint", "config", "wolfschanze"],
+  "keywords": [
+    "eslint",
+    "config",
+    "wolfschanze"
+  ],
   "homepage": "https://github.com/your-username/wolfschanze-agent#readme",
   "bugs": {
     "url": "https://github.com/your-username/wolfschanze-agent/issues"
