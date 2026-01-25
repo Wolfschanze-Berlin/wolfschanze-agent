@@ -1,8 +1,12 @@
 {
   "name": "@wolfschanze/typescript-config",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Shared TypeScript configuration for Wolfschanze projects",
-  "keywords": ["typescript", "config", "wolfschanze"],
+  "keywords": [
+    "typescript",
+    "config",
+    "wolfschanze"
+  ],
   "homepage": "https://github.com/your-username/wolfschanze-agent#readme",
   "bugs": {
     "url": "https://github.com/your-username/wolfschanze-agent/issues"

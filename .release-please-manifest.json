@@ -1,5 +1,5 @@
 {
   ".": "1.0.0",
-  "packages/typescript-config": "0.0.0",
+  "packages/typescript-config": "1.0.0",
   "packages/eslint-config": "0.0.0"
 }
